@@ -153,13 +153,6 @@ const checkForUnpublishedGames = async () => {
                 });
             }
         }
-        /*
-        axios.get(`https://api.opendota.com/api/players/${pId}/recentMatches`).then(resp => {
-            let data: paths['/players/{account_id}/recentMatches']['get']['responses']['200']['schema'] = resp.data;
-            
-            let match = data[1];
-        });
-        */
     }
 
     gamesToCheck = gamesToCheck.sort((a, b) => (a.end_time >= b.end_time) ? 1 : -1);
