@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { SlowBuffer } from 'buffer';
 import { Message } from 'discord.js';
 import express from 'express';
@@ -50,6 +51,18 @@ export default class ExpressService {
         this.app.get('/messages', async (req, res) => {
             let messages = await this.bot.loadMessagesFromChannel(20);
             res.json(messages);
+        });
+
+        this.app.get('/updates', async (req, res) => {
+            let test = await axios.get('https://store.steampowered.com/events/ajaxgetpartnereventspageable/?appid=570&l=english');
+            let result: string[] = [];
+            for (let ev of test.data.events) {
+                if (ev.event_type === 12) { // Dota gameplay update?
+                    result.push('<h3>' + ev.event_type + ' - ' + (new Date(ev.rtime32_start_time * 1000).toLocaleString()) + ' - ' + ev.event_name + '</h3><p>' + ev.announcement_body.body + '</p>');
+                }
+            }
+            res.send(`<html>${result.join('\n')}</html>`);
+            //res.json(test.data.events);
         })
     }
 
