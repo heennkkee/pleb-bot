@@ -56,6 +56,12 @@ export default class ExpressService {
         this.app.get('/updates', async (req, res) => {
             let test = await axios.get('https://store.steampowered.com/events/ajaxgetpartnereventspageable/?appid=570&l=english');
             let result: string[] = [];
+            // https://www.dota2.com/datafeed/patchnoteslist?language=english
+            // https://www.dota2.com/datafeed/itemlist?language=english
+            // https://www.dota2.com/datafeed/abilitylist?language=english
+            // https://www.dota2.com/datafeed/herolist?language=english
+            // https://www.dota2.com/datafeed/patchnotes?version=7.29d&language=english
+            
             for (let ev of test.data.events) {
                 if (ev.event_type === 12) { // Dota gameplay update?
                     result.push('<h3>' + ev.event_type + ' - ' + (new Date(ev.rtime32_start_time * 1000).toLocaleString()) + ' - ' + ev.event_name + '</h3><p>' + ev.announcement_body.body + '</p>');
